@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
     public class FuelCar : FuelVehicle
     {
         private CarFeatures m_CarFeatures;
-
+        int i;
         public FuelCar(int i_CarColor, int i_DoorsNumber, int i_FuelType, float i_CurrentFuelAmount, float i_MaxFuelAmount) : base(i_MaxFuelAmount, i_FuelType)
         {
             m_CarFeatures = new CarFeatures(i_CarColor, i_DoorsNumber);
