@@ -14,10 +14,10 @@ namespace Ex03.GarageLogic
         private eCarColor m_CarColor;
         private eNumberOfDoors m_NumberOfDoors;
 
-        public CarFeatures(int i_Color, int i_DoorsNumber)
+        public CarFeatures(eCarColor i_Color, eNumberOfDoors i_DoorsNumber)
         {
-            m_CarColor = (eCarColor)i_Color;
-            m_NumberOfDoors = (eNumberOfDoors)i_DoorsNumber;
+            m_CarColor = i_Color;
+            m_NumberOfDoors = i_DoorsNumber;
         }
 
         public eCarColor CarColor

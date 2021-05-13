@@ -20,7 +20,7 @@ namespace Ex03.GarageLogic
             m_FuelType = (eFuelType)i_FuelType;
         }
 
-        public abstract void Refuel(float i_AmountOfFuelToAdd, int i_FuelType);
+        public abstract void Refuel(float i_AmountOfFuelToAdd, eFuelType i_FuelType);
 
     }
 }

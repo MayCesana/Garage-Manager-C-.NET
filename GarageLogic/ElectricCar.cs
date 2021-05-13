@@ -14,5 +14,17 @@ namespace Ex03.GarageLogic
         {
             m_CarFeatures = new CarFeatures(i_CarColor, i_DoorsNumber);
         }
+
+        public override void ChargeBattery(float i_HoursToLoad)
+        {
+            if (i_HoursToLoad + m_RemainingBatteryTime <= m_MaxBatteryTime)
+            {
+                m_RemainingBatteryTime += i_HoursToLoad;
+            }
+            //else
+            //{
+            //    exeption
+            //}
+        }
     }
 }

@@ -23,7 +23,6 @@ namespace Ex03.GarageLogic
             SetRemainingEnergyPercentage(i_CurrentFuelAmount, i_MaxFuelAmount);
         }
  
-
         public bool IsCarryHazardousMaterials
         {
             get { return m_IsCarryHazardousMaterials; }
@@ -34,9 +33,9 @@ namespace Ex03.GarageLogic
             get { return m_FuelType; }
         }
 
-        public override void Refuel(float i_AmountOfFuelToAdd, int i_FuelType)
+        public override void Refuel(float i_AmountOfFuelToAdd, eFuelType i_FuelType)
         {
-
+            
         }
     }
 }

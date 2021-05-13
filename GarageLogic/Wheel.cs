@@ -19,9 +19,19 @@ namespace Ex03.GarageLogic
             m_MaxAirPressure = i_MaxAirPressure;
         }
 
-        private void blowWheel(float i_AmountOfAirToAdd)
+        public void blowWheel(float i_AmountOfAirToAdd)
         {
+            //להוסיף ולזרוק שגיאה אם חורג מהמקסימום
+        }
 
+        public float CurrentAirPressure
+        {
+            get { return m_CurrentAirPressure; }
+        }
+
+        public float MaxAirPressure
+        {
+            get { return m_MaxAirPressure; }
         }
 
     }
