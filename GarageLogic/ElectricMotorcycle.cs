@@ -10,10 +10,22 @@ namespace Ex03.GarageLogic
     {
         private MotorcycleFeatures m_MotorcycleFeatures;
 
-        public ElectricMotorcycle(string i_LicenseType, int i_EngineVolume)
+        public ElectricMotorcycle(eLicenseTypes i_LicenseType, int i_EngineVolume)
         {
             m_MotorcycleFeatures = new MotorcycleFeatures(i_LicenseType, i_EngineVolume);
         }
+
+        public override void ChargeBattery(float i_HoursToLoad)
+        {
+            if (i_HoursToLoad + m_RemainingBatteryTime <= m_MaxBatteryTime)
+            {
+                m_RemainingBatteryTime += i_HoursToLoad;
+            }
+            //else
+            //{
+            //    exeption
+            //}
+        } 
     }
 }
 

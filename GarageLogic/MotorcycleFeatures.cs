@@ -13,7 +13,7 @@ namespace Ex03.GarageLogic
         private eLicenseTypes m_LicenseType;
         private int m_EngineVolume; //CC
 
-        public MotorcycleFeatures(string i_LicenseType, int i_EngineVolume)
+        public MotorcycleFeatures(eLicenseTypes i_LicenseType, int i_EngineVolume)
         {
             switch(i_LicenseType)
             {

@@ -21,12 +21,7 @@ namespace Ex03.GarageLogic
             get { return m_MaxBatteryTime; }
         }
 
-        protected virtual void LoadBattery(float i_HoursToLoad)
-        {
-            if (i_HoursToLoad + m_RemainingBatteryTime <= m_MaxBatteryTime)
-            {
-                m_RemainingBatteryTime += i_HoursToLoad;
-            }
-        }
+        public abstract void ChargeBattery(float i_HoursToLoad);
+        
     }
 }
