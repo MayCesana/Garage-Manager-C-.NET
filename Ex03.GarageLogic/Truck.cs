@@ -8,19 +8,13 @@ namespace Ex03.GarageLogic
 {
     public class Truck : FuelVehicle
     {
-        private bool m_IsCarryHazardousMaterials;
-        private readonly float m_MaxCarryWhight;
-          
-        public Truck(bool i_IsCarryHazardousMaterials, int i_FuelType, float i_MaxFuelAmount, float i_CurrentFuelAmount, float i_MaxCarryWhight, string i_ModelName, string i_LicenseNumber, Wheel[] i_Wheels) 
-            : base(i_MaxFuelAmount, i_FuelType)
+        public Truck(string i_ModelName, string i_LicenseNumber, float i_CurrentFuelAmount, string i_ManufacturerName, float i_CurrentAirPressure) :
+            base(120f, eFuelType.Soler, i_CurrentFuelAmount, 16, i_ManufacturerName, i_CurrentAirPressure, 26)
         {
             m_LicenseNumber = i_LicenseNumber;
             m_ModelName = i_ModelName;
-            m_Wheels = i_Wheels;
             m_CurrentFuelAmount = i_CurrentFuelAmount;
-            m_IsCarryHazardousMaterials = i_IsCarryHazardousMaterials;
-            m_MaxCarryWhight = i_MaxCarryWhight;
-            SetRemainingEnergyPercentage(i_CurrentFuelAmount, i_MaxFuelAmount);
+            m_Features = new TruckFeatures();
         }
  
         public bool IsCarryHazardousMaterials

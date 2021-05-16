@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    public class GarageManager
+    public static class GarageManager
     {
         public class VehicleInTheGarage
         {
@@ -62,9 +62,9 @@ namespace Ex03.GarageLogic
             }
         }
 
-        private Dictionary<string, VehicleInTheGarage>[] m_AllVehiclesInTheGrage;
+        private static Dictionary<string, VehicleInTheGarage>[] m_AllVehiclesInTheGrage;
 
-        public GarageManager()
+        static GarageManager()
         {
             m_AllVehiclesInTheGrage = new Dictionary<string, VehicleInTheGarage>[3];
             for (int i = 0; i < 3; i++)
@@ -73,7 +73,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void AddNewVehicle(string i_OwnerName, string i_OwnerPhone, Vehicle i_VehicleToAdd)
+        public static void AddNewVehicle(string i_OwnerName, string i_OwnerPhone, Vehicle i_VehicleToAdd)
         {
             //if()//is in the garage)
             //{
@@ -81,12 +81,12 @@ namespace Ex03.GarageLogic
             //}
             //else
             //{
-               VehicleInTheGarage newVehicle = new VehicleInTheGarage(i_OwnerName, i_OwnerPhone, i_VehicleToAdd);
-               m_AllVehiclesInTheGrage[0].Add(newVehicle.Vehicle.LicenseNumber, newVehicle);
+             VehicleInTheGarage newVehicle = new VehicleInTheGarage(i_OwnerName, i_OwnerPhone, i_VehicleToAdd);
+             m_AllVehiclesInTheGrage[0].Add(newVehicle.Vehicle.LicenseNumber, newVehicle);
             //}
         }
 
-        public string[] GetVehicleLicenseNumberList()
+        public static string[] GetVehicleLicenseNumberList()
         {
             int index =0, resultListSize = m_AllVehiclesInTheGrage[0].Count + m_AllVehiclesInTheGrage[1].Count + m_AllVehiclesInTheGrage[2].Count;
             string[] licenseNumberList = new string[resultListSize];
@@ -102,7 +102,7 @@ namespace Ex03.GarageLogic
             return licenseNumberList;
         }
 
-        public string[] GetVehicleLicenseNumberList(int i_Status)
+        public static string[] GetVehicleLicenseNumberList(int i_Status)
         {
             int index = 0;
             string[] licenseNumberList = new string[m_AllVehiclesInTheGrage[i_Status].Count];
@@ -115,7 +115,7 @@ namespace Ex03.GarageLogic
             return licenseNumberList;
         }
 
-        public void ChangeVehicleStatus(string i_LicenseNumber, int i_NewStatus)
+        public static void ChangeVehicleStatus(string i_LicenseNumber, int i_NewStatus)
         {
             bool isExist = false;
 
@@ -135,7 +135,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        private VehicleInTheGarage FindVehicleInArray(string i_LicenseNumber)
+        public static VehicleInTheGarage GetVehicle(string i_LicenseNumber)
         {
             bool isExist = false;
             VehicleInTheGarage foundVehicle = null;
@@ -158,33 +158,27 @@ namespace Ex03.GarageLogic
             return foundVehicle;
         }
 
-        public void BlowWeelsToMax(string i_LicenseNumber)
+        public static void BlowWeelsToMax(string i_LicenseNumber)
         {
-            VehicleInTheGarage foundVehicle = FindVehicleInArray(i_LicenseNumber);
+            VehicleInTheGarage foundVehicle = GetVehicle(i_LicenseNumber);
             foreach (Wheel wheel in foundVehicle.Vehicle.Wheels)
             {
                 float amountOfAirToBlow = wheel.MaxAirPressure - wheel.CurrentAirPressure;
                 wheel.BlowWheel(amountOfAirToBlow);
-            }
-               
+            } 
         }
 
-        public void Reful(string i_LicenseNumber, FuelCar.eFuelType i_FuelType, float i_AmountOfFuel)
+        public static void Reful(string i_LicenseNumber, FuelCar.eFuelType i_FuelType, float i_AmountOfFuel)
         {
-            VehicleInTheGarage foundVehicle = FindVehicleInArray(i_LicenseNumber);
+            VehicleInTheGarage foundVehicle = findVehicleInArray(i_LicenseNumber);
             (foundVehicle.Vehicle as FuelVehicle).Refuel(i_AmountOfFuel, i_FuelType);
         }
 
-        public void Charge(string i_LicenseNumber, float i_AmountOfMinitsToCharge)
+        public static void Charge(string i_LicenseNumber, float i_AmountOfMinitsToCharge)
         {
-            VehicleInTheGarage foundVehicle = FindVehicleInArray(i_LicenseNumber);
+            VehicleInTheGarage foundVehicle = GetVehicle(i_LicenseNumber);
             (foundVehicle.Vehicle as ElectricVehicle).ChargeBattery(i_AmountOfMinitsToCharge);
             //check if as worked
-        }
-
-        public VehicleInTheGarage GetVehicleInTheGarage(string i_LicenseNumber)
-        {
-            return FindVehicleInArray(i_LicenseNumber);
         }
     }
 }

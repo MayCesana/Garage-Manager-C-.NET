@@ -12,10 +12,16 @@ namespace Ex03.GarageLogic
         protected string m_LicenseNumber;
         protected float m_RemainingEnergyPercentage;
         protected Wheel[] m_Wheels;
+        protected VehicleFeatures m_Features;
 
-        public void SetRemainingEnergyPercentage(float i_CurrentValue, float i_MaxValue)
+        protected Vehicle(float i_CurrentEnergyValue, float i_MaxEnergyValue, int i_NumberOfWeels, string i_ManufacturerName, float i_CurrentAirPressure, float i_MaxAirPressure)
         {
-            m_RemainingEnergyPercentage = (i_CurrentValue / i_MaxValue) * 100;
+            Wheel[] wheels = new Wheel[i_NumberOfWeels];
+            for (int i = 0; i < wheels.Length; ++i)
+            {
+                wheels[i] = new Wheel(i_ManufacturerName, i_CurrentAirPressure, i_MaxAirPressure);
+            }
+            m_RemainingEnergyPercentage = (i_CurrentEnergyValue / i_MaxEnergyValue) * 100;
         }
 
         public float RemainingEnergyPercentage
@@ -32,6 +38,11 @@ namespace Ex03.GarageLogic
             {
                 return m_LicenseNumber;
             }
+        }
+
+        public VehicleFeatures Features
+        {
+            get { return m_Features; }
         }
 
         public Wheel[] Wheels

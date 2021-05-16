@@ -8,13 +8,13 @@ namespace Ex03.GarageLogic
 {
     public class FuelMotorcycle : FuelVehicle
     {
-        private MotorcycleFeatures m_MotorcycleFeatures;
-       
-        public FuelMotorcycle(MotorcycleFeatures.eLicenseTypes i_LicenseType, int i_EngineVolume, int i_FuelType, float i_CurrentFuelAmount, float i_MaxFuelAmount) : base(i_MaxFuelAmount, i_FuelType)
+        public FuelMotorcycle(string i_ModelName, string i_LicenseNumber, float i_CurrentFuelAmount, string i_ManufacturerName, float i_CurrentAirPressure) :
+            base(6f, FuelVehicle.eFuelType.Octan98, i_CurrentFuelAmount, 2, i_ManufacturerName, i_CurrentAirPressure, 30)
         {
-            m_MotorcycleFeatures = new MotorcycleFeatures(i_LicenseType, i_EngineVolume);
+            m_LicenseNumber = i_LicenseNumber;
+            m_ModelName = i_ModelName;
             m_CurrentFuelAmount = i_CurrentFuelAmount;
-            SetRemainingEnergyPercentage(i_CurrentFuelAmount, i_MaxFuelAmount);
+            m_Features = new MotorcycleFeatures();
         }
 
         public override void Refuel(float i_AmountOfFuelToAdd, eFuelType i_FuelType)
