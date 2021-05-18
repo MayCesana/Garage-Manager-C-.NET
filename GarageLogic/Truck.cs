@@ -8,35 +8,21 @@ namespace Ex03.GarageLogic
 {
     public class Truck : FuelVehicle
     {
-        private bool m_IsCarryHazardousMaterials;
-        private readonly float m_MaxCarryWhight;
-          
-        public Truck(bool i_IsCarryHazardousMaterials, int i_FuelType, float i_MaxFuelAmount, float i_CurrentFuelAmount, float i_MaxCarryWhight, string i_ModelName, string i_LicenseNumber, Wheel[] i_Wheels) 
-            : base(i_MaxFuelAmount, i_FuelType)
-        {
-            m_LicenseNumber = i_LicenseNumber;
-            m_ModelName = i_ModelName;
-            m_Wheels = i_Wheels;
-            m_CurrentFuelAmount = i_CurrentFuelAmount;
-            m_IsCarryHazardousMaterials = i_IsCarryHazardousMaterials;
-            m_MaxCarryWhight = i_MaxCarryWhight;
-            SetRemainingEnergyPercentage(i_CurrentFuelAmount, i_MaxFuelAmount);
-        }
- 
+        private const float k_MaximunFuelAmount = 120;
+        private const eFuelType k_FuelType = eFuelType.Soler;
+        private const float k_MaximunAirPressure = 26;
+        private const int k_NumberOfWeels = 16;
 
-        public bool IsCarryHazardousMaterials
+        public Truck() : base(k_MaximunFuelAmount, k_FuelType)
         {
-            get { return m_IsCarryHazardousMaterials; }
-        }
-         
-        public eFuelType FuelType
-        {
-            get { return m_FuelType; }
+            m_Wheels = new Wheel[k_NumberOfWeels];
+            CreateWheels(k_MaximunAirPressure);
+            m_Features = new TruckAdditionalFeatures();
         }
 
-        public override void Refuel(float i_AmountOfFuelToAdd, int i_FuelType)
+        public override eFuelType FuelType
         {
-
+                get { return r_FuelType; }
         }
     }
 }

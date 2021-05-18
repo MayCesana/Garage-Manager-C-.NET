@@ -7,19 +7,23 @@ using System.Threading.Tasks;
 namespace Ex03.GarageLogic
 {
     public class FuelCar : FuelVehicle
-    {
-        private CarFeatures m_CarFeatures;
-        int i,n;
-        public FuelCar(int i_CarColor, int i_DoorsNumber, int i_FuelType, float i_CurrentFuelAmount, float i_MaxFuelAmount) : base(i_MaxFuelAmount, i_FuelType)
+    { 
+        private const float k_CarMaximunFuelAmount = 45;
+        private const eFuelType k_CarFuelType = eFuelType.Octan95;
+        private const float k_MaximunAirPressure = 32;
+        private const int k_NumberOfWeels = 4;
+
+        public FuelCar() : base(k_CarMaximunFuelAmount, k_CarFuelType)
         {
-            m_CarFeatures = new CarFeatures(i_CarColor, i_DoorsNumber);
-            m_CurrentFuelAmount = i_CurrentFuelAmount;
-            SetRemainingEnergyPercentage(i_CurrentFuelAmount, i_MaxFuelAmount);
+            m_Wheels = new Wheel[k_NumberOfWeels];
+            CreateWheels(k_MaximunAirPressure);
+            m_Features = new CarAdditionalFeatures();
         }
 
-        public override void Refuel(float i_AmountOfFuelToAdd, int i_FuelType)
+        public override eFuelType FuelType
         {
-            //compare i_FuelType=this.fuelType
+            get { return r_FuelType; }
         }
+
     }
 }

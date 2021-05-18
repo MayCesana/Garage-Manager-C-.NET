@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    class ElectricCar
+    class ElectricCar : ElectricVehicle
     {
-        private CarFeatures m_CarFeatures;
+        private const float k_MaximunBatteryTime = 3.2f;
+        private const float k_MaximunAirPressure = 32;
+        private const int k_NumberOfWeels = 4;
 
-        public ElectricCar(int i_CarColor, int i_DoorsNumber)
+        public ElectricCar() : base(k_MaximunBatteryTime)
         {
-            m_CarFeatures = new CarFeatures(i_CarColor, i_DoorsNumber);
+            m_Wheels = new Wheel[k_NumberOfWeels];
+            CreateWheels(k_MaximunAirPressure);
+            m_Features = new CarAdditionalFeatures();
         }
     }
 }

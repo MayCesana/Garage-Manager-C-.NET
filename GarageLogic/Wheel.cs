@@ -10,19 +10,51 @@ namespace Ex03.GarageLogic
     {
         private string m_ManufacturerName;
         private float m_CurrentAirPressure;
-        private float m_MaxAirPressure;
+        private readonly float r_MaxAirPressure;
 
-        public Wheel(string i_ManufacturerName, float i_CurrentAirPressure, float i_MaxAirPressure)
+        public Wheel(float i_MaxAirPressure)
         {
-            m_ManufacturerName = i_ManufacturerName;
-            m_CurrentAirPressure = i_CurrentAirPressure;
-            m_MaxAirPressure = i_MaxAirPressure;
+            r_MaxAirPressure = i_MaxAirPressure;
         }
 
-        private void blowWheel(float i_AmountOfAirToAdd)
+        public void InflateWheel(float i_AmountOfAirToAdd)
         {
-
+            if(i_AmountOfAirToAdd + m_CurrentAirPressure > r_MaxAirPressure)
+            {
+                throw new ValueOutOfRangeException(0, r_MaxAirPressure - m_CurrentAirPressure, "You are trying to inflate over the maximum");
+            }
+            else
+            {
+                m_CurrentAirPressure += i_AmountOfAirToAdd;
+            }
         }
 
+        public float CurrentAirPressure
+        {
+            get { return m_CurrentAirPressure; }
+        }
+
+        public void SetCurrentAirPressure(float i_CurrentAirPressure)
+        {
+            if (i_CurrentAirPressure > r_MaxAirPressure)
+            {
+                throw new ValueOutOfRangeException(0, r_MaxAirPressure, "Air pressure amount is bigger than the maximum");
+            }
+            else
+            {
+                m_CurrentAirPressure = i_CurrentAirPressure;
+            }
+        }
+
+        public float MaxAirPressure
+        {
+            get { return r_MaxAirPressure; }
+        }
+
+        public string ManufacturerName
+        {
+            get { return m_ManufacturerName; }
+            set { m_ManufacturerName = value; }
+        }
     }
 }
