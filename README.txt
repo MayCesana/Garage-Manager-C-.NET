@@ -1,0 +1,3 @@
+This project is written in C# during our semester studies in C# and .Net framework course. In the project, the UI part separated from the logic part.
+
+The purpose of this project is to build a system to manage a garage. The accepted vehicles In the garage are: car, motorcycle, and truck. The garage manager is responsible to add vehicles to the garage, to show all the vehicles or specific vehicle details, charge\ fuel, and inflate some vehicle's wheels.
