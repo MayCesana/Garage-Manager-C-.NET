@@ -8,24 +8,16 @@ namespace Ex03.GarageLogic
 {
     public class ElectricMotorcycle : ElectricVehicle
     {
-        private MotorcycleFeatures m_MotorcycleFeatures;
+        private const float k_MaximunBatteryTime = 1.8f;
+        private const float k_MaximunAirPressure = 30;
+        private const int k_NumberOfWeels = 2;
 
-        public ElectricMotorcycle(eLicenseTypes i_LicenseType, int i_EngineVolume)
+        public ElectricMotorcycle() : base(k_MaximunBatteryTime)
         {
-            m_MotorcycleFeatures = new MotorcycleFeatures(i_LicenseType, i_EngineVolume);
+            m_Wheels = new Wheel[k_NumberOfWeels];
+            CreateWheels(k_MaximunAirPressure);
+            m_Features = new MotorcycleAdditionalFeatures();
         }
-
-        public override void ChargeBattery(float i_HoursToLoad)
-        {
-            if (i_HoursToLoad + m_RemainingBatteryTime <= m_MaxBatteryTime)
-            {
-                m_RemainingBatteryTime += i_HoursToLoad;
-            }
-            //else
-            //{
-            //    exeption
-            //}
-        } 
     }
 }
 

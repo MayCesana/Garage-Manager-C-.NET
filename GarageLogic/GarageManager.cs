@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    public class GarageManager
+    public static class GarageManager
     {
         public class VehicleInTheGarage
         {
@@ -62,37 +62,63 @@ namespace Ex03.GarageLogic
             }
         }
 
-        private Dictionary<string, VehicleInTheGarage>[] m_AllVehiclesInTheGrage;
+        private static Dictionary<string, VehicleInTheGarage>[] s_AllVehiclesInTheGrage;
 
-        public GarageManager()
+        static GarageManager()
         {
-            m_AllVehiclesInTheGrage = new Dictionary<string, VehicleInTheGarage>[3];
-            for (int i = 0; i < 3; i++)
+            int arraySize = Enum.GetNames(typeof(VehicleInTheGarage.eVehicleStatus)).Length;
+
+            s_AllVehiclesInTheGrage = new Dictionary<string, VehicleInTheGarage>[arraySize];
+            for (int i = 0; i < arraySize; i++)
             {
-                m_AllVehiclesInTheGrage[i] = new Dictionary<string, VehicleInTheGarage>();
+                s_AllVehiclesInTheGrage[i] = new Dictionary<string, VehicleInTheGarage>();
             }
         }
 
-        public void AddNewVehicle(string i_OwnerName, string i_OwnerPhone, Vehicle i_VehicleToAdd)
+        public static void AddNewVehicle(string i_OwnerName, string i_OwnerPhone, Vehicle i_VehicleToAdd, string i_LicenseNumber, string i_ModelName, float i_CurrentEnergy, string i_WheelsManufacturerName, float i_WheelsCurrentAirPressure, List<object> i_VehicleAdditionalFeatures)
         {
-            //if()//is in the garage)
-            //{
-            //    //change statuse and change dictionary
-            //}
-            //else
-            //{
-               VehicleInTheGarage newVehicle = new VehicleInTheGarage(i_OwnerName, i_OwnerPhone, i_VehicleToAdd);
-               m_AllVehiclesInTheGrage[0].Add(newVehicle.Vehicle.LicenseNumber, newVehicle);
-            //}
+            setParametersToVehicle(i_VehicleToAdd, i_LicenseNumber, i_ModelName, i_CurrentEnergy, i_WheelsManufacturerName, i_WheelsCurrentAirPressure, i_VehicleAdditionalFeatures);
+            VehicleInTheGarage newVehicle = new VehicleInTheGarage(i_OwnerName, i_OwnerPhone, i_VehicleToAdd);
+            s_AllVehiclesInTheGrage[(int)VehicleInTheGarage.eVehicleStatus.inRepair].Add(newVehicle.Vehicle.LicenseNumber, newVehicle);
         }
 
-        public string[] GetVehicleLicenseNumberList()
+        private static void setParametersToVehicle(Vehicle i_Vehicle, string i_LicenseNumber, string i_ModelName, float i_CurrentEnergy, string i_WheelsManufacturerName, float i_WheelsCurrentAirPressure, List<object> i_VehicleAdditionalFeatures)
         {
-            int index =0, resultListSize = m_AllVehiclesInTheGrage[0].Count + m_AllVehiclesInTheGrage[1].Count + m_AllVehiclesInTheGrage[2].Count;
+            i_Vehicle.LicenseNumber = i_LicenseNumber;
+            i_Vehicle.ModelName = i_ModelName;
+            i_Vehicle.SetCurrentEnergy(i_CurrentEnergy);
+            i_Vehicle.SetWheelsDetails(i_WheelsManufacturerName, i_WheelsCurrentAirPressure);
+            i_Vehicle.Features.SetAdditionalFeatures(i_VehicleAdditionalFeatures);
+        }
+
+        public static bool IsInTheGarage(string i_LicenseNumber)
+        {
+            bool isExist = false;
+
+            foreach (Dictionary<string, VehicleInTheGarage> listByStastus in s_AllVehiclesInTheGrage)
+            {
+                if (listByStastus.ContainsKey(i_LicenseNumber) == true)
+                {
+                    isExist = true;
+                    break;
+                }
+            }
+
+            if (isExist)
+            {
+                isExist = true;
+            }
+
+            return isExist;
+        }
+
+        public static string[] GetVehicleLicenseNumberList()
+        {
+            int index =0, resultListSize = s_AllVehiclesInTheGrage[0].Count + s_AllVehiclesInTheGrage[1].Count + s_AllVehiclesInTheGrage[2].Count;
             string[] licenseNumberList = new string[resultListSize];
             for (int i=0; i<3; i++)
             {
-                foreach(string licenseNumber in m_AllVehiclesInTheGrage[i].Keys)
+                foreach(string licenseNumber in s_AllVehiclesInTheGrage[i].Keys)
                 {
                     licenseNumberList[index] = licenseNumber;
                     index++;
@@ -102,11 +128,11 @@ namespace Ex03.GarageLogic
             return licenseNumberList;
         }
 
-        public string[] GetVehicleLicenseNumberList(int i_Status)
+        public static string[] GetVehicleLicenseNumberList(int i_Status)
         {
             int index = 0;
-            string[] licenseNumberList = new string[m_AllVehiclesInTheGrage[i_Status].Count];
-            foreach(string licenseNumber in m_AllVehiclesInTheGrage[i_Status].Keys)
+            string[] licenseNumberList = new string[s_AllVehiclesInTheGrage[i_Status - 1].Count];
+            foreach(string licenseNumber in s_AllVehiclesInTheGrage[i_Status - 1].Keys)
             {
                 licenseNumberList[index] = licenseNumber;
                 index++;
@@ -115,76 +141,90 @@ namespace Ex03.GarageLogic
             return licenseNumberList;
         }
 
-        public void ChangeVehicleStatus(string i_LicenseNumber, int i_NewStatus)
+        public static void ChangeVehicleStatus(string i_LicenseNumber, VehicleInTheGarage.eVehicleStatus i_NewStatus)
         {
-            bool isExist = false;
+            int oldStatus;
+            VehicleInTheGarage vehicle;
 
-            for (int i = 0; i < 3; i++)
-            {
-                if (m_AllVehiclesInTheGrage[i].ContainsKey(i_LicenseNumber) == true)
-                {
-                    isExist = true;
-                    m_AllVehiclesInTheGrage[i][i_LicenseNumber].VehicleStatus = (VehicleInTheGarage.eVehicleStatus)i_NewStatus;
-                    break;
-                }
-            }
+            vehicle = GetVehicle(i_LicenseNumber);
+            oldStatus = (int)vehicle.VehicleStatus;
+            vehicle.VehicleStatus = i_NewStatus;
 
-            if(!isExist)
-            {
-                //exception
-            }
+            //move vehicle to new status dictionary
+            s_AllVehiclesInTheGrage[(int)i_NewStatus - 1].Add(i_LicenseNumber, vehicle);
+            s_AllVehiclesInTheGrage[oldStatus].Remove(i_LicenseNumber);
         }
 
-        private VehicleInTheGarage FindVehicleInArray(string i_LicenseNumber)
+        public static VehicleInTheGarage GetVehicle(string i_LicenseNumber)
         {
             bool isExist = false;
             VehicleInTheGarage foundVehicle = null;
 
-            foreach (Dictionary<string, VehicleInTheGarage> listByStastus in m_AllVehiclesInTheGrage)
+            foreach (Dictionary<string, VehicleInTheGarage> listByStastus in s_AllVehiclesInTheGrage)
             {
                 if (listByStastus.ContainsKey(i_LicenseNumber) == true)
                 {
                     isExist = true;
-                    foundVehicle =  listByStastus[i_LicenseNumber];
+                    foundVehicle = listByStastus[i_LicenseNumber];
                     break;
                 }
             }
 
             if (!isExist)
             {
-                //exception
+                throw new Exception("The vehicle is not exist in the garage!");
             }
 
             return foundVehicle;
         }
 
-        public void BlowWeelsToMax(string i_LicenseNumber)
+        public static void InflateWeelsToMax(string i_LicenseNumber)
         {
-            VehicleInTheGarage foundVehicle = FindVehicleInArray(i_LicenseNumber);
+            VehicleInTheGarage foundVehicle = GetVehicle(i_LicenseNumber);
             foreach (Wheel wheel in foundVehicle.Vehicle.Wheels)
             {
-                float amountOfAirToBlow = wheel.MaxAirPressure - wheel.CurrentAirPressure;
-                wheel.BlowWheel(amountOfAirToBlow);
+                float amountOfAirToInflate = wheel.MaxAirPressure - wheel.CurrentAirPressure;
+                wheel.InflateWheel(amountOfAirToInflate);
+            } 
+        }
+
+        public static float Reful(string i_LicenseNumber, FuelVehicle.eFuelType i_FuelType, float i_AmountOfFuel)
+        {
+            float fuelStatusAfterReful;
+            VehicleInTheGarage foundVehicle = GetVehicle(i_LicenseNumber);
+            
+            FuelVehicle vehicleToReful = foundVehicle.Vehicle as FuelVehicle;
+            if (vehicleToReful != null)
+            {
+                vehicleToReful.Refuel(i_AmountOfFuel, i_FuelType);
+                fuelStatusAfterReful = vehicleToReful.RemainingEnergyPercentage;
             }
-               
+            else
+            {
+                throw new ArgumentException("You are trying to reful an electric vehicel!");
+            }
+
+            return fuelStatusAfterReful;
         }
 
-        public void Reful(string i_LicenseNumber, FuelCar.eFuelType i_FuelType, float i_AmountOfFuel)
+        public static float Charge(string i_LicenseNumber, float i_AmountOfMinutesToCharge)
         {
-            VehicleInTheGarage foundVehicle = FindVehicleInArray(i_LicenseNumber);
-            (foundVehicle.Vehicle as FuelVehicle).Refuel(i_AmountOfFuel, i_FuelType);
-        }
+            float batteryStatusAfterReful;
+            VehicleInTheGarage foundVehicle = GetVehicle(i_LicenseNumber);
+            ElectricVehicle vehicleToCharge = foundVehicle.Vehicle as ElectricVehicle;
 
-        public void Charge(string i_LicenseNumber, float i_AmountOfMinitsToCharge)
-        {
-            VehicleInTheGarage foundVehicle = FindVehicleInArray(i_LicenseNumber);
-            (foundVehicle.Vehicle as ElectricVehicle).ChargeBattery(i_AmountOfMinitsToCharge);
-            //check if as worked
-        }
+            if(vehicleToCharge != null)
+            {
+                float hoursToCharge = i_AmountOfMinutesToCharge / 60;
+                vehicleToCharge.ChargeBattery(hoursToCharge);
+                batteryStatusAfterReful = vehicleToCharge.RemainingEnergyPercentage;
+            }
+            else
+            {
+                throw new ArgumentException("You are trying to charge a fuel vehicel!");
+            }
 
-        public VehicleInTheGarage GetVehicleInTheGarage(string i_LicenseNumber)
-        {
-            return FindVehicleInArray(i_LicenseNumber);
+            return batteryStatusAfterReful;
         }
     }
 }
